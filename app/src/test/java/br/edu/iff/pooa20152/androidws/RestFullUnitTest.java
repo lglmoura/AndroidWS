@@ -16,11 +16,13 @@ public class RestFullUnitTest {
     RestFullHelper http;
     JSONObject json;
     String id;
+    String  durl = "http://doml-pooa20152.herokuapp.com/empregadors";
+
 
     @Before
     public void setUp() throws Exception {
         http = new RestFullHelper();
-        json = http.doPost("http://localhost:3000/logins.json",getParams());
+        json = http.doPost(durl+".json",getParams());
         id = Integer.toString(json.getInt("id")).trim();
 
     }
@@ -33,10 +35,10 @@ public class RestFullUnitTest {
     @Test
     public void doget() throws Exception {
 
-        json = http.doGet("http://localhost:3000/logins/"+id+".json");
+        json = http.doGet(durl+"/"+id+".json");
 
-        assertEquals("654321", json.getString("senha"));
-        http.doDelete("http://localhost:3000/logins/"+id+".json");
+        assertEquals("4000", json.getString("numero"));
+        http.doDelete(durl+"/"+id+".json");
     }
 
     @Test
@@ -44,7 +46,7 @@ public class RestFullUnitTest {
 
 
 
-        json = http.doDelete("http://localhost:3000/logins/"+id+".json");
+        json = http.doDelete(durl+"/"+id+".json");
 
         assertEquals(null, json);
     }
@@ -53,8 +55,8 @@ public class RestFullUnitTest {
     public void doPost() throws Exception{
 
 
-        assertEquals("654321", json.getString("senha"));
-        http.doDelete("http://localhost:3000/logins/"+id+".json");
+        assertEquals("luiz", json.getString("nome"));
+        http.doDelete(durl+"/"+id+".json");
 
     }
     @Test
@@ -62,13 +64,13 @@ public class RestFullUnitTest {
 
         JSONObject oPut = new JSONObject();
         oPut.put("nome","Gustavo:"+id);
-        oPut.put("senha","123456:"+id);
-        oPut.put("username","Gustavo:"+id);
+        oPut.put("endereco","Av Presidente:"+id);
+        oPut.put("numero","400:"+id);
 
-        json = http.doPut("http://localhost:3000/logins/"+id+".json",oPut);
+        json = http.doPut(durl+"/"+id+".json",oPut);
 
         assertEquals("Gustavo:"+id, json.getString("nome"));
-        http.doDelete("http://localhost:3000/logins/"+id+".json");
+        http.doDelete(durl+"/"+id+".json");
 
     }
 
@@ -77,8 +79,8 @@ public class RestFullUnitTest {
         try {
 
             params.put("nome", "luiz");
-            params.put("senha", "654321");
-            params.put("username", "luizlogin");
+            params.put("endereco", "AV PV");
+            params.put("numero", "4000");
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
