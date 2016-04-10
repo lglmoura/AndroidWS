@@ -9,8 +9,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -28,27 +30,94 @@ public class RestFullHelper {
     private String contentType;
     private String charsetToEncode;
 
+    public JSONObject doPost(String url, JSONObject params)  {
+        return doPost(url, params, StandardCharsets.UTF_8);
 
-    public JSONObject doGet(String url) throws IOException {
-        return doGet(url, "UTF-8");
     }
 
-    public JSONObject doGet(String url, String charset) {
+    public JSONObject doPost(String url,JSONObject params, Charset charset) {
 
-        JSONObject jObj = null;
+
+        if (LOG_ON) {
+            Log.d(TAG, ">> Http.doPost: " + url);
+        }
+
+        return getJSON(url, POST,params,charset);
+    }
+
+    public JSONObject doPut(String url, JSONObject params)  {
+        return doPut(url, params, StandardCharsets.UTF_8);
+
+    }
+
+    public JSONObject doPut(String url,JSONObject params, Charset charset) {
+
+
+        if (LOG_ON) {
+            Log.d(TAG, ">> Http.doPut: " + url);
+        }
+
+        return getJSON(url, PUT,params,charset);
+    }
+
+
+    public JSONObject doGet(String url)  {
+        return doGet(url, StandardCharsets.UTF_8);
+    }
+
+    public JSONObject doGet(String url, Charset charset) {
 
 
         if (LOG_ON) {
             Log.d(TAG, ">> Http.doGet: " + url);
         }
 
+        return getJSON(url, GET);
+    }
+
+    public JSONObject doDelete(String url){
+        return doDelete(url, StandardCharsets.UTF_8);
+    }
+
+    public JSONObject doDelete(String url, Charset charset) {
+
+
+        if (LOG_ON) {
+            Log.d(TAG, ">> Http.doDelete: " + url);
+        }
+
+        return getJSON(url, DELETAR);
+    }
+
+
+    public JSONObject getJSON(String url, String method) {
+        return getJSON(url, method, null, StandardCharsets.UTF_8);
+    }
+
+    public JSONObject getJSON(String url, String method, JSONObject params) {
+        return getJSON(url, method, params, StandardCharsets.UTF_8);
+    }
+
+    public JSONObject getJSON(String url, String method, JSONObject params, Charset charset) {
 
         HttpURLConnection conn = null;
-        String s = null;
+
         String json = null;
+        JSONObject jObj = null;
+
         try {
-            conn = (HttpURLConnection) getConnection(url, GET);
+            conn = (HttpURLConnection) getConnection(url, method,"application/json");
             conn.connect();
+
+            if (params != null) {
+
+                OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
+                out.write(params.toString());
+                out.flush();
+                out.close();
+
+
+            }
 
             InputStream in = null;
 
@@ -60,20 +129,18 @@ public class RestFullHelper {
                 in = conn.getInputStream();
             }
 
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, charset));
             json = buffering(reader);
 
             if (LOG_ON) {
                 Log.d(TAG, "<< Http.doGet: " + json);
             } else {
-                System.out.println(">> Http.doGet:json " + json);
+                System.out.println(">> Http.do"+method+":json " + json);
             }
             in.close();
 
         } catch (IOException e) {
             e.printStackTrace();
-            ;
         } finally {
             if (conn != null) {
                 conn.disconnect();
@@ -83,18 +150,17 @@ public class RestFullHelper {
         try {
             jObj = new JSONObject(json);
         } catch (JSONException e) {
-
-            Log.e("JSON Parser", "Error parsing data TEST " + e.toString());
+            jObj = null;
         }
 
         if (LOG_ON) {
-            Log.d(TAG, "<< Http.doGet: " + s);
+            Log.d(TAG, "<< Http.doGet: " + jObj);
         }
 
         return jObj;
     }
 
-    public String buffering(BufferedReader reader){
+    public String buffering(BufferedReader reader) {
         StringBuilder sb = new StringBuilder();
         try {
 
@@ -116,8 +182,6 @@ public class RestFullHelper {
 
     public HttpURLConnection getConnection(String endPoint, String method, String contentType) {
 
-        System.out.println("ENDPOINT " + endPoint + " METHOD " + method);
-
         HttpURLConnection conn = null;
 
         try {
@@ -125,6 +189,7 @@ public class RestFullHelper {
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod(method);
             conn.setDoOutput(true);
+            conn.setDoInput(true);
 
             if (contentType != null)
                 conn.setRequestProperty("Content-Type", contentType);
@@ -140,7 +205,6 @@ public class RestFullHelper {
 
         return conn;
     }
-
 
 
 }
