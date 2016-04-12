@@ -56,8 +56,6 @@ public class RestFullUnitTest {
     @Test
     public void doDelete() throws Exception {
 
-
-
         json = http.doDelete(durl+"/"+id+".json");
 
         assertEquals(null, json);
@@ -65,7 +63,6 @@ public class RestFullUnitTest {
 
     @Test
     public void doPost() throws Exception{
-
 
         assertEquals("luiz", json.getString("nome"));
         http.doDelete(durl+"/"+id+".json");

@@ -30,38 +30,37 @@ public class RestFullHelper {
     private String contentType;
     private String charsetToEncode;
 
-    public JSONObject doPost(String url, JSONObject params)  {
+    public JSONObject doPost(String url, JSONObject params) {
         return doPost(url, params, StandardCharsets.UTF_8);
 
     }
 
-    public JSONObject doPost(String url,JSONObject params, Charset charset) {
+    public JSONObject doPost(String url, JSONObject params, Charset charset) {
 
 
         if (LOG_ON) {
             Log.d(TAG, ">> Http.doPost: " + url);
         }
 
-        return getJSON(url, POST,params,charset);
+        return getJSON(url, POST, params, charset);
     }
 
-    public JSONObject doPut(String url, JSONObject params)  {
+    public JSONObject doPut(String url, JSONObject params) {
         return doPut(url, params, StandardCharsets.UTF_8);
 
     }
 
-    public JSONObject doPut(String url,JSONObject params, Charset charset) {
+    public JSONObject doPut(String url, JSONObject params, Charset charset) {
 
 
         if (LOG_ON) {
             Log.d(TAG, ">> Http.doPut: " + url);
         }
 
-        return getJSON(url, PUT,params,charset);
+        return getJSON(url, PUT, params, charset);
     }
 
-
-    public JSONObject doGet(String url)  {
+    public JSONObject doGet(String url) {
         return doGet(url, StandardCharsets.UTF_8);
     }
 
@@ -69,13 +68,13 @@ public class RestFullHelper {
 
 
         if (LOG_ON) {
-            Log.d(TAG, ">> Http.doGet: " + url);
+            Log.d(TAG, ">>>>>>>>>>> Http.doGet: " + url);
         }
 
         return getJSON(url, GET);
     }
 
-    public JSONObject doDelete(String url){
+    public JSONObject doDelete(String url) {
         return doDelete(url, StandardCharsets.UTF_8);
     }
 
@@ -106,7 +105,7 @@ public class RestFullHelper {
         JSONObject jObj = null;
 
         try {
-            conn = (HttpURLConnection) getConnection(url, method,"application/json");
+            conn = (HttpURLConnection) getConnection(url, method, "application/json");
             conn.connect();
 
             if (params != null) {
@@ -116,14 +115,13 @@ public class RestFullHelper {
                 out.flush();
                 out.close();
 
-
             }
 
             InputStream in = null;
 
             int status = conn.getResponseCode();
             if (status >= HttpURLConnection.HTTP_BAD_REQUEST) {
-                Log.d(TAG, "Error code: " + status);
+                Log.d(TAG, "Error code HTTP_BAD_REQUEST : " + status + " - URL: " + url + " - " + method);
                 in = conn.getErrorStream();
             } else {
                 in = conn.getInputStream();
@@ -133,9 +131,9 @@ public class RestFullHelper {
             json = buffering(reader);
 
             if (LOG_ON) {
-                Log.d(TAG, "<< Http.do"+method+": " + json);
-            }else{
-                System.out.println("<< Http.do"+method+": " +json);
+                Log.d(TAG, "JSON << Http.do" + method + ": " + json);
+            } else {
+                System.out.println("<< Http.do" + method + ": " + json);
             }
 
 
@@ -185,13 +183,15 @@ public class RestFullHelper {
     public HttpURLConnection getConnection(String endPoint, String method, String contentType) {
 
         HttpURLConnection conn = null;
+        System.out.println("<< " + method + ": " + endPoint + "   " + contentType);
 
         try {
             URL url = new URL(endPoint);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod(method);
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
+            if (!method.equalsIgnoreCase(RestFullHelper.GET))
+                conn.setDoOutput(true);
+
 
             if (contentType != null)
                 conn.setRequestProperty("Content-Type", contentType);
