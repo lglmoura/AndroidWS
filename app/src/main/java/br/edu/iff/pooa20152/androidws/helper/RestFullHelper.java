@@ -1,4 +1,4 @@
-package br.edu.iff.pooa20152.androidws;
+package br.edu.iff.pooa20152.androidws.helper;
 
 import android.util.Log;
 
@@ -133,10 +133,12 @@ public class RestFullHelper {
             json = buffering(reader);
 
             if (LOG_ON) {
-                Log.d(TAG, "<< Http.doGet: " + json);
-            } else {
-                System.out.println(">> Http.do"+method+":json " + json);
+                Log.d(TAG, "<< Http.do"+method+": " + json);
+            }else{
+                System.out.println("<< Http.do"+method+": " +json);
             }
+
+
             in.close();
 
         } catch (IOException e) {

@@ -6,6 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.edu.iff.pooa20152.androidws.helper.RestFullHelper;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -17,6 +19,7 @@ public class RestFullUnitTest {
     JSONObject json;
     String id;
     String  durl = "http://doml-pooa20152.herokuapp.com/empregadors";
+    //durl = "http://localhost:3000/logins"
 
 
     @Before
@@ -30,6 +33,15 @@ public class RestFullUnitTest {
     public void tearDown() throws Exception {
 
 
+    }
+
+    @Test
+    public void dogets() throws Exception {
+
+        json = http.doGet(durl+".json");
+
+      //assertEquals(12, json.);
+        http.doDelete(durl+"/"+id+".json");
     }
 
     @Test

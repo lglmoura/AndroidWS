@@ -1,4 +1,4 @@
-package br.edu.iff.pooa20152.androidws;
+package br.edu.iff.pooa20152.androidws.activitys;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import br.edu.iff.pooa20152.androidws.R;
 
 public class MainActivity extends AppCompatActivity {
 
