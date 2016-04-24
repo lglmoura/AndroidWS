@@ -18,8 +18,8 @@ public class RestFullUnitTest {
     RestFullHelper http;
     JSONObject json;
     String id;
-    String  durl = "http://doml-pooa20152.herokuapp.com/empregadors";
-    //durl = "http://localhost:3000/logins"
+    //String  durl = "http://doml-pooa20152.herokuapp.com/empregadors";
+    String durl = "http://localhost:3000/empregadors";
 
 
     @Before

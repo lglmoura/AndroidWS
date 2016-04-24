@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btSalvar;
     private Button btLimpar;
     private Button btDeletar;
-    private String durl = "http://doml-pooa20152.herokuapp.com";
+    //private String durl = "http://doml-pooa20152.herokuapp.com";
+    private String durl = "http://192.168.0.56:3000";
 
 
     @Override
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void postInformationtoAPI() {
 
-        Log.i("Post====", "POSTING ORDER");
+        Log.d("Post====", "POSTING ORDER");
 
         JSONObject params = new JSONObject();
 
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         EmpregadorTask bgtPost = new EmpregadorTask(
-                durl + "/empregadors", RestFullHelper.POST, params);
+                durl + "/empregadors.json", RestFullHelper.POST, params);
         bgtPost.execute();
 
     }

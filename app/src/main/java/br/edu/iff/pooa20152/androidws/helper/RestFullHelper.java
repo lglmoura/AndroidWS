@@ -25,7 +25,7 @@ public class RestFullHelper {
     public static String DELETAR = "DELETE";
     public static String GET = "GET";
     public final int TIMEOUT_MILLIS = 15000;
-    private final String TAG = "Http";
+    private final String TAG = "RestFull";
     public boolean LOG_ON = false;
     private String contentType;
     private String charsetToEncode;
@@ -103,6 +103,8 @@ public class RestFullHelper {
 
         String json = null;
         JSONObject jObj = null;
+        //Log.d(TAG, ">>>>>>>>>>>>>>> Http.getson: " + url);
+
 
         try {
             conn = (HttpURLConnection) getConnection(url, method, "application/json");
@@ -133,7 +135,7 @@ public class RestFullHelper {
             if (LOG_ON) {
                 Log.d(TAG, "JSON << Http.do" + method + ": " + json);
             } else {
-                System.out.println("<< Http.do" + method + ": " + json);
+                System.out.println("<<<<<<<<<<< Http.do" + method + ": " + json);
             }
 
 
@@ -183,12 +185,13 @@ public class RestFullHelper {
     public HttpURLConnection getConnection(String endPoint, String method, String contentType) {
 
         HttpURLConnection conn = null;
-        System.out.println("<< " + method + ": " + endPoint + "   " + contentType);
+        System.out.println("!!!<<<<<>>>>>>>!!! " + method + ": " + endPoint + "   " + contentType);
 
         try {
             URL url = new URL(endPoint);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod(method);
+
             if (!method.equalsIgnoreCase(RestFullHelper.GET))
                 conn.setDoOutput(true);
 
