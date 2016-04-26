@@ -10,4 +10,8 @@
     <string name="sbtSalvar">Salvar</string>
     <string name="sbtLimpar">Limpar</string>
     <string name="sbtDeletar">Deletar</string>
+    <string name="stvNumero">Número</string>
+    <string name="stvCnpj">CNPJ</string>
+    <string name="URL">http://listacompras-pooa20162.herokuapp.com</string>
+
 </resources>

@@ -18,8 +18,8 @@ public class RestFullUnitTest {
     RestFullHelper http;
     JSONObject json;
     String id;
-    //String  durl = "http://doml-pooa20152.herokuapp.com/empregadors";
-    String durl = "http://localhost:3000/empregadors";
+    String  durl = "http://listacompras-pooa20162.herokuapp.com/fabricantes";
+
 
 
     @Before
@@ -75,6 +75,7 @@ public class RestFullUnitTest {
         oPut.put("nome","Gustavo:"+id);
         oPut.put("endereco","Av Presidente:"+id);
         oPut.put("numero","400:"+id);
+        oPut.put("cnpj","400:"+id);
 
         json = http.doPut(durl+"/"+id+".json",oPut);
 

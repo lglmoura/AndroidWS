@@ -68,6 +68,44 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llNumeroEmpregador"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tvNumero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stvNumero" />
+
+            <EditText
+                android:id="@+id/etNumero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llCnpjEmpregador"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tvCnpj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stvCnpj" />
+
+            <EditText
+                android:id="@+id/etCnpj"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/llButtonEmpregador"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

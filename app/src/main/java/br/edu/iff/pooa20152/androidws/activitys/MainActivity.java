@@ -25,12 +25,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText etNome;
     private EditText etEndereco;
     private EditText etNumero;
+    private EditText etCnpj;
+
+    private final String TAG = "MAIN";
     private Button btConsultar;
     private Button btSalvar;
     private Button btLimpar;
     private Button btDeletar;
-    //private String durl = "http://doml-pooa20152.herokuapp.com";
-    private String durl = "http://192.168.0.56:3000";
+    private String durl;
+
 
 
     @Override
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         etCodigo = (EditText) findViewById(R.id.etCodigo);
         etNome = (EditText) findViewById(R.id.etNome);
         etEndereco = (EditText) findViewById(R.id.etEndereco);
+        etNumero = (EditText) findViewById(R.id.etNumero);
+        etCnpj = (EditText) findViewById(R.id.etCnpj);
+        durl = getString(R.string.URL);
 
         btConsultar = (Button) findViewById(R.id.btConsutar);
         btConsultar.setOnClickListener(new View.OnClickListener() {
@@ -82,9 +88,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
 
-                etCodigo.setText("");
-                etNome.setText("");
-                etEndereco.setText("");
+                limpar();
 
             }
         });
@@ -98,34 +102,44 @@ public class MainActivity extends AppCompatActivity {
 
                 deletarInformationtoAPI();
 
+
             }
         });
     }
 
     private void deletarInformationtoAPI() {
 
-        Log.i("Deletar====", "Deletar ORDER");
+        Log.i(TAG, "Deletar ORDER");
 
         JSONObject params = null;
 
-        EmpregadorTask bgtDel = new EmpregadorTask(
-                durl + "/empregadors/"
+        FabricanteTask bgtDel = new FabricanteTask(
+                durl + "/fabricantes/"
                         + etCodigo.getText().toString() + ".json",
                 RestFullHelper.DELETAR, params);
         bgtDel.execute();
+        limpar();
+    }
+
+    private void limpar(){
+
+        System.out.println(getString(R.string.sbtDeletar));
+
+        etCodigo.setText("");
+        etNome.setText("");
+        etEndereco.setText("");
+        etNumero.setText("");
+        etCnpj.setText("");
 
     }
 
     private void gettInformationtoAPI() {
 
-       // Log.i("Http", "GETTING ORDER: "+durl + "/empregadors/"
-       //         + etCodigo.getText().toString() + ".json");
-
 
         JSONObject params = null;
 
-        EmpregadorTask bgtGet = new EmpregadorTask(
-                durl + "/empregadors/"
+        FabricanteTask bgtGet = new FabricanteTask(
+                durl + "/fabricantes/"
                         + etCodigo.getText().toString() + ".json",
                 RestFullHelper.GET, params);
 
@@ -135,44 +149,46 @@ public class MainActivity extends AppCompatActivity {
 
     private void postInformationtoAPI() {
 
-        Log.d("Post====", "POSTING ORDER");
+        Log.d(TAG, "POSTING ORDER");
 
         JSONObject params = new JSONObject();
 
         try {
             params.put("nome", etNome.getText().toString());
             params.put("endereco", etEndereco.getText().toString());
-            params.put("numero", "adadf");
+            params.put("numero", etNumero.getText().toString());
+            params.put("cnpj", etCnpj.getText().toString());
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        EmpregadorTask bgtPost = new EmpregadorTask(
-                durl + "/empregadors.json", RestFullHelper.POST, params);
+        FabricanteTask bgtPost = new FabricanteTask(
+                durl + "/fabricantes.json", RestFullHelper.POST, params);
         bgtPost.execute();
 
     }
 
     private void putInformationtoAPI() {
 
-        Log.i("Put====", "PUT ORDER");
+        Log.i(TAG, "PUT ORDER");
 
         JSONObject params = new JSONObject();
 
         try {
             params.put("nome", etNome.getText().toString());
             params.put("endereco", etEndereco.getText().toString());
-            params.put("numero", "adadf");
+            params.put("numero", etNumero.getText().toString());
+            params.put("cnpj",etCnpj.getText().toString());
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        EmpregadorTask bgtPut = new EmpregadorTask(
-                durl + "/empregadors/"
+        FabricanteTask bgtPut = new FabricanteTask(
+                durl + "/fabricantes/"
                         + etCodigo.getText().toString() + ".json",
                 RestFullHelper.PUT, params);
         bgtPut.execute();
@@ -197,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class EmpregadorTask extends AsyncTask<String, String, JSONObject> {
+    public class FabricanteTask extends AsyncTask<String, String, JSONObject> {
 
         String url = null;
         String method = null;
@@ -205,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
 
         ProgressDialog dialog;
 
-        public EmpregadorTask(String url, String method, JSONObject params1) {
+        public FabricanteTask(String url, String method, JSONObject params1) {
             this.url = url;
             this.method = method;
             this.params1 = params1;
@@ -227,6 +243,8 @@ public class MainActivity extends AppCompatActivity {
                     etCodigo.setText(empregador.getString("id"));
                     etNome.setText(empregador.getString("nome"));
                     etEndereco.setText(empregador.getString("endereco"));
+                    etNumero.setText(empregador.getString("numero"));
+                    etCnpj.setText(empregador.getString("cnpj"));
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
